@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 解析为a标签 tab nav -->
+      <router-link to="/foo">导航1</router-link>
+      <router-link to="/bar">导航2</router-link>
+      <router-link to="/music">导航3</router-link>
+      <router-link to="/search/666">搜索</router-link>
+      <!-- tab content -->
+      <router-view></router-view>
+    </div>
+  </body>
+</html>
+<!-- js放上面会影响页面的解析 -->
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 导入 vue-router vue路由 高级的tab -->
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script>
+  // 组件 简化写法
+  const Foo = { template: '<div>我相信</div>' }
+  const Bar = { template: '<div>最初的梦想</div>' }
+  const Music = { template: '<div>追梦赤子心-gala</div>' }
+  const Search = { template: '<div>{{$route.params.q}}</div>' }
+
+  // 注册路由规则
+  // 地址和 组件的对应关系
+  const routes = [
+    { path: '/foo', component: Foo },
+    { path: '/bar', component: Bar },
+    { path: '/music', component: Music },
+    // { path: '/search/:query', component: Search }
+    { path: '/search/:q', component: Search }
+  ]
+
+  // 实例化路由对象
+  const router = new VueRouter({
+    routes //  routes: routes
+    // 属性名是固定的
+    // routes:routers // routers: routers
+  })
+
+  // 4. 创建和挂载根实例。
+  // 记得要通过 router 配置参数注入路由，
+  // 从而让整个应用都有路由功能
+  const app = new Vue({
+    el: '#app',
+    // 和Vue实例关联
+    router // router:router 属性名必须叫router
+  })
+  // .$mount('#app')
+
+  // 现在，应用已经启动了！
+</script>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <fly></fly>
+      <fly></fly>
+      <fly></fly>
+    </div>
+  </body>
+</html>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 组件的模板 -->
+<script type="text/html" id="flyTem">
+  <div>
+    <h2 @click="fly">我要飞上天</h2>
+    <h3>和太阳肩并肩</h3>
+    <h4>我相信--杨培安</h4>
+    <input type="text" v-model="voice" >
+    <p>你写的内容是：{{voice}}</p>
+  </div>
+</script>
+<script>
+  // 注册组件
+  Vue.component('fly', {
+    // 结构 模板
+    template: '#flyTem',
+    // 数据
+    data() {
+      console.log('执行啦')
+      return {
+        voice: ''
+      }
+    },
+    // 方法
+    methods: {
+      fly() {
+        alert('嘤嘤嘤嘤！！')
+      }
+    }
+  })
+
+  // 创建Vue实例
+  const app = new Vue({
+    el: '#app'
+  })
+</script>

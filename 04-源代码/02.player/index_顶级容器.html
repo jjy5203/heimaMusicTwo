@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <!-- 首页的样式 -->
+    <link rel="stylesheet" href="./css/index.css" />
+    <!-- 搜索的样式 -->
+    <link rel="stylesheet" href="./css/results.css" />
+    <!-- 播放器的样式 -->
+    <link rel="stylesheet" href="./css/player.css" />
+    <!-- video播放器的样式 -->
+    <link rel="stylesheet" href="./css/video.css" />
+    <!-- 评论的样式 -->
+    <link rel="stylesheet" href="./css/comment.css" />
+    <link rel="stylesheet" href="./css/iconfont.css" />
+  </head>
+  <body>
+    <div id="player">
+      <h2 class="title">黑云音乐</h2>
+      <div class="search">
+        <!-- 搜索框 双向数据绑定 按下回车 -->
+        <input type="text" v-model.trim="search" @keyup.enter="searchMusic" />
+        <button @click="searchMusic">
+          <span class="iconfont icon-search"></span>
+        </button>
+      </div>
+      <!-- tab（路由） -->
+      <div class="tab-wrapper">
+        <!-- tab-nav -->
+        <div class="tab-bar">
+          <!-- <a class="bar-item active"> -->
+          <router-link active-class="active" to="/result" class="bar-item">
+            搜索结果
+          </router-link>
+          <!-- </a> -->
+          <!-- <a class="bar-item"> -->
+          <router-link active-class="active" to="/player" class="bar-item">
+            歌曲播放
+          </router-link>
+          <!-- </a> -->
+          <!-- <a class="bar-item"> -->
+          <router-link active-class="active" to="/video" class="bar-item">
+            mv
+          </router-link>
+          <!-- </a> -->
+          <!-- <a class="bar-item"> -->
+          <router-link active-class="active" to="/comment" class="bar-item">
+            歌曲评论
+          </router-link>
+        </div>
+        <!-- 对应的内容区域 -->
+        <div class="tab-content">
+          <!-- 内容  -->
+          <router-view></router-view>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<!-- 组件1 搜索结果 -->
+<script type="text/html" id="resultTem">
+  <div class="result-wrapper">
+    <div class="song" v-for="item in musicList">
+      <div class="name">
+        <span class="iconfont icon-play" @click="toPlay(item.id)"></span>
+        {{item.name}}
+        <span class="iconfont icon-editmedia" v-if="item.mvid!=0"></span>
+      </div>
+      <div class="singer">{{item.artists | formatSinger}}</div>
+      <div class="album">《{{item.album.name}}》</div>
+      <!-- 持续时间 -->
+      <div class="time">{{item.duration | formatTime}}</div>
+    </div>
+  </div>
+</script>
+<!-- 组件2 音乐播放器 -->
+<script type="text/html" id="playerTem">
+  <div class="player">
+      <div class="left">
+        <img class="disc" src="./img/disc.png" alt="">
+        <img class="cover" :src="coverUrl" alt="">
+      </div>
+      <div class="right">
+        <div class="title"><img src="./img/tag.png" alt=""><span>{{songName}}</span> </div>
+        <div class="singer">歌手: <span>{{singerName}}</span></div>
+        <div class="album">所属专辑: <span>{{albumName}}</span></div>
+        <audio class="audio" controls="" autoplay :src="musicUrl"></audio>
+        <ul class="lyric-container">
+          <li class="lyric" v-for="item in lyric">{{item}}</li>
+        </ul>
+      </div>
+    </div>
+</script>
+<!-- 组件3 mv播放器 -->
+<script type="text/html" id="videoTem">
+  <div class="video">
+      <div class="title-wrapper">
+        <span class="tag">MV</span>
+        <span class="title">冲动的惩罚</span>
+        <span class="artist">刀郎</span>
+      </div>
+      <video src="" controls=""></video>
+  </div>
+</script>
+<!-- 组件4 歌曲评论 -->
+<script type="text/html" id="commentTem">
+  <div class="comment-wrapper">
+      <div class="items">
+        <div class="item">
+          <div class="left">
+            <img src="./img/icon.jpg" alt="">
+          </div>
+          <div class="right">
+            <div class="top">
+              <span class="user">阿木木:</span>
+              <span class="content">写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心</span>
+            </div>
+            <div class="bottom">
+              <div class="time">2016年9月18日</div>
+              <div class="like-wrapper">
+                  <span>👍</span>(6666)
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="left">
+            <img src="./img/icon.jpg" alt="">
+          </div>
+          <div class="right">
+            <div class="top">
+              <span class="user">阿木木:</span>
+              <span class="content">写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心</span>
+            </div>
+            <div class="bottom">
+              <div class="time">2016年9月18日</div>
+              <div class="like-wrapper">
+                  <span>👍</span>(6666)
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="left">
+            <img src="./img/icon.jpg" alt="">
+          </div>
+          <div class="right">
+            <div class="top">
+              <span class="user">阿木木:</span>
+              <span class="content">写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心写歌的人假正经，唱歌的人最矫情，听歌的人最用心</span>
+            </div>
+            <div class="bottom">
+              <div class="time">2016年9月18日</div>
+              <div class="like-wrapper">
+                  <span>👍</span>(6666)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</script>
+<!-- 导入vue -->
+<!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+<script src="./lib/vue.js"></script>
+<!-- 导入路由 -->
+<!-- <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script> -->
+<script src="./lib/vue-router.js"></script>
+<!-- 导入axios -->
+<script src="./lib/axios.js"></script>
+<script>
+  // 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter)
+
+  // 1. 定义 (路由) 组件。
+  // 搜索结果组件
+  const result = {
+    template: '#resultTem',
+    // 数据
+    data() {
+      return {
+        // 歌曲列表
+        musicList: []
+      }
+    },
+    // 方法
+    methods: {
+      toPlay(id) {
+        // 代码跳转
+        router.push(`/player/${id}`)
+      }
+    },
+    // 过滤器
+    filters: {
+      // 处理格式
+      formatSinger(singers) {
+        // console.log(singers)
+        // 空字符串拼接
+        let temStr = ''
+        // 获取所有的歌手
+        for (let i = 0; i < singers.length; i++) {
+          // 拼接歌手
+          temStr += singers[i].name
+          // 拼接分隔符
+          temStr += '/'
+        }
+        // 移除最后一个/
+        // 0从0开始
+        // -1 到倒数第二个 （-1 ,从后往前来算）
+        temStr = temStr.slice(0, -1)
+
+        // return'牛逼的歌手'
+        // 返回拼接的数据
+        return temStr
+      },
+      // 处理时间
+      formatTime(time) {
+        console.log(time)
+        // 毫秒->秒
+        const totalSec = time / 1000
+        // 秒->分 小数部分舍去
+        const min = Math.floor(totalSec / 60)
+        // 剩余的部分是 秒 不满足分的部分 全部到秒
+        let sec = Math.floor(totalSec % 60)
+        // 秒不够2位 补足2位
+        sec = sec < 10 ? '0' + sec : sec
+
+        return min + ':' + sec
+      }
+    },
+    // 组件创建完毕
+    created() {
+      // 获取数据
+      // console.log(this.$route.params.search)
+      // axios接口调用
+      axios
+        .get(
+          `https://autumnfish.cn/search?keywords=${this.$route.params.search}`
+        )
+        .then(backData => {
+          // console.log(backData)
+          // 保存歌曲列表
+          this.musicList = backData.data.result.songs
+        })
+    }
+  }
+  // 播放器组件
+  const player = {
+    template: '#playerTem',
+    // 数据 是方法
+    data() {
+      return {
+        // 歌曲地址
+        musicUrl: '',
+        // 歌手名
+        singerName: '',
+        // 封面
+        coverUrl: '',
+        // 专辑名
+        albumName: '',
+        // 歌名
+        songName: '',
+        // 歌词
+        lyric: []
+      }
+    },
+    // 生命周期钩子
+    created() {
+      // 获取id
+      // 调用接口 获取url
+      axios
+        .get(`https://autumnfish.cn/song/url?id=${this.$route.params.id}`)
+        .then(backData => {
+          // console.log(backData)
+          // 设置歌曲地址
+          this.musicUrl = backData.data.data[0].url
+        })
+
+      // 调用接口 获取 歌曲信息
+      axios
+        .get(`https://autumnfish.cn/song/detail?ids=${this.$route.params.id}`)
+        .then(backData => {
+          // console.log(backData)
+          // 封面地址
+          this.coverUrl = backData.data.songs[0].al.picUrl
+          // 专辑名
+          this.albumName = backData.data.songs[0].al.name
+          // 歌手名
+          this.singerName = backData.data.songs[0].ar[0].name
+          // 歌名
+          this.songName = backData.data.songs[0].name
+        })
+
+      // 歌词
+      axios
+        .get(`https://autumnfish.cn/lyric?id=${this.$route.params.id}`)
+        .then(backData => {
+          // console.log(backData)
+          // 保存歌词为数组
+          this.lyric = backData.data.lrc.lyric.split('\n')
+          // 循环数组 切掉 [00:00.000]
+          for(let i=0;i<this.lyric.length;i++){
+            this.lyric[i] = this.lyric[i].slice(11)
+          }
+        })
+    }
+  }
+  // mv组件
+  const video = { template: '#videoTem' }
+  // 评论组件
+  const comment = { template: '#commentTem' }
+
+  // 2. 定义路由
+  const routes = [
+    // 为了能够传递数据 规则需要定义为/result/:xx
+    { path: '/result/:search', component: result },
+    { path: '/player/:id', component: player },
+    { path: '/video', component: video },
+    { path: '/comment', component: comment }
+  ]
+
+  // 3. 创建 router 实例，然后传 `routes` 配置
+  // 你还可以传别的配置参数, 不过先这么简单着吧。
+  const router = new VueRouter({
+    routes // (缩写) 相当于 routes: routes
+  })
+
+  // 4. 创建和挂载根实例。
+  const app = new Vue({
+    el: '#player',
+    // 挂载路由
+    router,
+    // data就是对象
+    data: {
+      // 搜索的关键字
+      search: ''
+    },
+    // 方法
+    methods: {
+      // 搜索数据 把值 传递给result
+      searchMusic() {
+        // console.log('去搜索')
+        // 获取search
+        // 代码的方式切换 路由（编程式导航）
+        router.push(`/result/${this.search}`)
+      }
+    }
+  })
+</script>
